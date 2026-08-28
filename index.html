@@ -82,20 +82,55 @@
 
   <h1>Here's an ASCII art of Saber eating</h1>
 
-  <pre id="ascii"></pre>
+  <div id="ascii-wrap">
+    <pre id="ascii"></pre>
+  </div>
 
   <footer>made by ritsukasu</footer>
 
   <script src="frames.js"></script>
   <script>
     const el = document.getElementById('ascii');
+    const wrap = document.getElementById('ascii-wrap');
     let i = 0;
+
+    const BASE_FONT = 10;
+    const BASE_LINE = 10;
+    const BASE_SPACING = 2;
+
     function tick() {
       el.textContent = frames[i];
       i = (i + 1) % frames.length;
     }
+
+    function fitAscii() {
+      el.style.fontSize = BASE_FONT + 'px';
+      el.style.lineHeight = BASE_LINE + 'px';
+      el.style.letterSpacing = BASE_SPACING + 'px';
+
+      const wrapRect = wrap.getBoundingClientRect();
+      const naturalWidth = el.scrollWidth;
+      const naturalHeight = el.scrollHeight;
+      if (naturalWidth === 0 || naturalHeight === 0) return;
+
+      const scale = Math.min(
+        wrapRect.width / naturalWidth,
+        wrapRect.height / naturalHeight
+      ) * 0.98;
+
+      el.style.fontSize = (BASE_FONT * scale) + 'px';
+      el.style.lineHeight = (BASE_LINE * scale) + 'px';
+      el.style.letterSpacing = (BASE_SPACING * scale) + 'px';
+    }
+
     tick();
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitAscii);
+    }
+    fitAscii();
     setInterval(tick, 150);
+    window.addEventListener('resize', fitAscii);
   </script>
 
 </body>
