@@ -39,7 +39,7 @@
     text-shadow:
       3px 3px 0 #888888,
       -1px -1px 0 #444444;
-    margin: 0 0 8px;
+    margin: 0 0 4px;
     padding: 0 8px;
     max-width: 900px;
     white-space: nowrap;
@@ -47,11 +47,8 @@
   }
 
   #ascii-wrap {
-    flex: 1 1 auto;
     display: flex;
-    align-items: center;
     justify-content: center;
-    min-height: 0;
     width: 100%;
     overflow: hidden;
   }
@@ -108,14 +105,24 @@
       el.style.lineHeight = BASE_LINE + 'px';
       el.style.letterSpacing = BASE_SPACING + 'px';
 
-      const wrapRect = wrap.getBoundingClientRect();
       const naturalWidth = el.scrollWidth;
       const naturalHeight = el.scrollHeight;
       if (naturalWidth === 0 || naturalHeight === 0) return;
 
+      const h1 = document.querySelector('h1');
+      const footer = document.querySelector('footer');
+      const bodyStyles = getComputedStyle(document.body);
+      const paddingV =
+        (parseFloat(bodyStyles.paddingTop) || 0) +
+        (parseFloat(bodyStyles.paddingBottom) || 0);
+
+      const usedHeight = h1.offsetHeight + footer.offsetHeight + paddingV + 24;
+      const availableHeight = window.innerHeight - usedHeight;
+      const availableWidth = document.body.clientWidth - 16;
+
       const scale = Math.min(
-        wrapRect.width / naturalWidth,
-        wrapRect.height / naturalHeight
+        availableWidth / naturalWidth,
+        availableHeight / naturalHeight
       ) * 0.85;
 
       el.style.fontSize = (BASE_FONT * scale) + 'px';
