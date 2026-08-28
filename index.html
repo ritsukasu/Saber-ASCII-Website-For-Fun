@@ -53,6 +53,7 @@
     justify-content: center;
     min-height: 0;
     width: 100%;
+    overflow: hidden;
   }
 
   pre#ascii {
@@ -64,7 +65,6 @@
     color: #ffffff;
     background: #000000;
     white-space: pre;
-    transform-origin: center center;
   }
 
   footer {
@@ -116,7 +116,7 @@
       const scale = Math.min(
         wrapRect.width / naturalWidth,
         wrapRect.height / naturalHeight
-      ) * 0.98;
+      ) * 0.85;
 
       el.style.fontSize = (BASE_FONT * scale) + 'px';
       el.style.lineHeight = (BASE_LINE * scale) + 'px';
